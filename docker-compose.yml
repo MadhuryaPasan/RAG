@@ -1,0 +1,88 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # container_name: Removed for better scalability
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - backend_uploads:/app/uploads # to save pdf file to a volume
+    environment:
+      - ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - MODEL_NAME=MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0
+      - EMBEDDING_MODEL=qwen3-embedding:0.6b
+      - OPENAI_BASE_URL=http://ollama:11434/v1
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - API_KEY=ollama
+      - USER_AGENT=MyFastApp/1.0
+    networks:
+      - Rag_system_network
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/docs" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - HOSTNAME=0.0.0.0
+      - WATCHPACK_POLLING=1000
+      - CHOKIDAR_USEPOLLING=true
+      - NEXT_PUBLIC_API_URL=http://localhost:8000 # Client-side URL
+      - BACKEND_INTERNAL_URL=http://backend:8000 # Server-side (Docker) URL
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy # Only starts frontend after backend passes healthcheck
+    networks:
+      - Rag_system_network
+
+  ollama:
+    image: ollama/ollama:0.15.1
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - Rag_system_network
+    healthcheck:
+      test: [ "CMD", "ollama", "list" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  init-ollama:
+    image: ollama/ollama:0.15.1
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - Rag_system_network
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    # command: [ "pull", "MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0" ]
+    entrypoint: [ "/bin/sh", "-c", "ollama pull MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0 && ollama pull qwen3-embedding:0.6b" ]
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_data:
+  backend_uploads:
+
+
+networks:
+  Rag_system_network:
+    driver: bridge
+
+#docker compose build .

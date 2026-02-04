@@ -20,9 +20,9 @@ const filecard = ({ name }: { name: string }) => {
                 {/* <ItemDescription>File Description</ItemDescription> */}
             </ItemContent>
             <ItemActions>
-                <Button variant="destructive" size="icon">
+                {/* <Button variant="destructive" size="icon">
                     <Trash />
-                </Button>
+                </Button> */}
             </ItemActions>
         </Item>
     )

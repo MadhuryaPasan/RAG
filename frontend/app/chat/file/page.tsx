@@ -15,7 +15,8 @@ export default function FileUpload() {
     const fetchFiles = useCallback(async () => {
         setIsFetching(true);
         try {
-            const response = await fetch("http://localhost:8000/api/v1/files/list");
+            // const response = await fetch("http://localhost:8000/api/v1/files/list");
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/files/list`);
             const data = await response.json();
             setFiles(data.files || []); // data.files matches your FastAPI return
         } catch (error) {
@@ -42,11 +43,15 @@ export default function FileUpload() {
         });
 
         try {
-            const response = await fetch("http://localhost:8000/api/v1/files/upload", {
+            // const response = await fetch("http://localhost:8000/api/v1/files/upload", {
+            //     method: "POST",
+            //     body: formData,
+            //     // Note: Do NOT set Content-Type header. 
+            //     // The browser will set it automatically with the correct boundary.
+            // });
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/files/upload`, {
                 method: "POST",
                 body: formData,
-                // Note: Do NOT set Content-Type header. 
-                // The browser will set it automatically with the correct boundary.
             });
 
             if (response.ok) {

@@ -64,7 +64,8 @@ const ActionsDemo = () => {
   // --- CHAT HOOK ---
   const { messages, sendMessage, status, regenerate, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: 'http://localhost:8000/api/v1/chat',
+      // api: 'http://localhost:8000/api/v1/chat',
+      api: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/chat`,
     }),
   });
 

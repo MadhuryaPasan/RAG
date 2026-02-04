@@ -19,11 +19,15 @@ UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 MODEL_NAME = os.getenv("MODEL_NAME") or ""
-BASE_URL = os.getenv("BASE_URL") or ""
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL") or ""
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL") or ""
 API_KEY = os.getenv("API_KEY") or "" 
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL") or ""
 
-embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+embeddings = OllamaEmbeddings(
+    model=EMBEDDING_MODEL,
+    base_url= OLLAMA_BASE_URL
+    )
 vector_store = None
 
 text_splitter = RecursiveCharacterTextSplitter(

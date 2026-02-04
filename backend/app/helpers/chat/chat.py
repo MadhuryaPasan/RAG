@@ -12,11 +12,11 @@ import json
 load_dotenv()
 
 MODEL_NAME = os.getenv("MODEL_NAME") or ""
-BASE_URL = os.getenv("BASE_URL") or ""
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL") or ""
 API_KEY = os.getenv("API_KEY") or ""
 
 # loading the model
-model = ChatOpenAI(model=MODEL_NAME, base_url=BASE_URL, api_key=SecretStr(API_KEY), temperature=0.9)
+model = ChatOpenAI(model=MODEL_NAME, base_url=OPENAI_BASE_URL, api_key=SecretStr(API_KEY), temperature=0.9)
 prompt = (
     "You have access to a tool that retrieves context form documents. "
     "Use the tool to help answer user queries."
