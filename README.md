@@ -1,4 +1,4 @@
-# RAG System
+# RAG System version 0.1 
 
 A fully containerized RAG application built with a **Python backend** and a **Next.js frontend** using the AI SDK. This system is designed specifically to analyze **PDF documents**.
 
