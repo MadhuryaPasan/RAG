@@ -25,7 +25,7 @@ Models may take time to download. To check the progress:
 * Click on the `init-ollama` container.
 * Check the **Logs** for the download status.
 
-> **Note:** If performance is slow, consider using the `using-host-device-ollama-server` repository instead.
+> **Note:** If performance is slow, consider using the [`using-host-device-ollama-server`](https://github.com/MadhuryaPasan/RAG/tree/using-host-device-ollama-server) repository instead.
 
 ---
 
