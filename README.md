@@ -17,3 +17,4 @@ docker compose up
 - search: >Dev Containers: Reopen in Container
 - hit enter and chose the dev container backend or frontend
 
+> All the pdf will be saved on a docker volume named `rag_backend_uploads`. Manage the file using this.
