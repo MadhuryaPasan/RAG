@@ -14,15 +14,19 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - MODEL_NAME=MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0
       - EMBEDDING_MODEL=qwen3-embedding:0.6b
-      - OPENAI_BASE_URL=http://ollama:11434/v1
-      - OLLAMA_BASE_URL=http://ollama:11434
+      # - OPENAI_BASE_URL=http://ollama:11434/v1
+      - OPENAI_BASE_URL=http://host.docker.internal:11434/v1
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      # - OLLAMA_BASE_URL=http://ollama:11434
       - API_KEY=ollama
       - USER_AGENT=MyFastApp/1.0
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
     networks:
       - Rag_system_network
-    depends_on:
-      ollama:
-        condition: service_healthy
+    # depends_on:
+    #   ollama:
+    #     condition: service_healthy
 
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/docs" ]
@@ -48,36 +52,36 @@ services:
     networks:
       - Rag_system_network
 
-  ollama:
-    image: ollama/ollama:0.15.1
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - Rag_system_network
-    healthcheck:
-      test: [ "CMD", "ollama", "list" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+  # ollama:
+  #   image: ollama/ollama:0.15.1
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - Rag_system_network
+  #   healthcheck:
+  #     test: [ "CMD", "ollama", "list" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
 
-  init-ollama:
-    image: ollama/ollama:0.15.1
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - Rag_system_network
-    environment:
-      - OLLAMA_HOST=ollama:11434
-    # command: [ "pull", "MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0" ]
-    entrypoint: [ "/bin/sh", "-c", "ollama pull MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0 && ollama pull qwen3-embedding:0.6b" ]
-    depends_on:
-      ollama:
-        condition: service_healthy
+  # init-ollama:
+  #   image: ollama/ollama:0.15.1
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - Rag_system_network
+  #   environment:
+  #     - OLLAMA_HOST=ollama:11434
+  #   # command: [ "pull", "MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0" ]
+  #   entrypoint: [ "/bin/sh", "-c", "ollama pull MadhuryaPasan/qwen3-no-thinking:1.7b-q8_0 && ollama pull qwen3-embedding:0.6b" ]
+  #   depends_on:
+  #     ollama:
+  #       condition: service_healthy
 
 volumes:
-  ollama_data:
+  # ollama_data:
   backend_uploads:
 
 
