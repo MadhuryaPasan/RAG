@@ -2,6 +2,9 @@
 
 A fully containerized RAG application built with a **Python backend** and a **Next.js frontend** using the AI SDK. This system is designed specifically to analyze **PDF documents**.
 
+* Backend: Python, Fastapi, Langchain
+* Frontend: NextJs, Vercel AI SDK 6
+
 ## Getting Started
 
 ### 1. Close Host Ollama
