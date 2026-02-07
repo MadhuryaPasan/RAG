@@ -2,6 +2,9 @@
 
 A RAG application for **PDF analysis** using a **Python backend** and a **Next.js + AI SDK frontend**. This version connects to an Ollama server running directly on your host machine for better performance.
 
+* Backend: Python, Fastapi, Langchain
+* Frontend: NextJs, Vercel AI SDK 6
+
 ## Installation and Setup
 
 ### 1. Install Ollama
